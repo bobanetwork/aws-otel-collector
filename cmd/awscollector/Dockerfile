@@ -29,7 +29,7 @@ RUN apk --update add ca-certificates
 #	       Build Stage         #
 #			                   #
 ################################
-FROM golang:1.20 AS prep-build
+FROM golang:1.22 AS prep-build
 
 ARG TARGETARCH
 
@@ -51,10 +51,11 @@ RUN make ${TARGETARCH}-build
 
 # move
 RUN mv /workspace/build/linux/$TARGETARCH/aoc /workspace/awscollector
+RUN mv /workspace/build/linux/$TARGETARCH/healthcheck /workspace/healthcheck
 
 ################################
 #	Copy Stage             #
-#			       #	
+#			       #
 ################################
 FROM scratch AS prep-copy
 
@@ -77,8 +78,8 @@ COPY config.yaml /workspace/config/otel-config.yaml
 COPY config/ /workspace/config/
 
 ################################
-#	Final Stage            #	
-#			       #	
+#	Final Stage            #
+#			       #
 ################################
 FROM scratch
 

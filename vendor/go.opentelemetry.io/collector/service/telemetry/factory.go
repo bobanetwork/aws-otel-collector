@@ -5,6 +5,7 @@ package telemetry // import "go.opentelemetry.io/collector/service/telemetry"
 
 import (
 	"context"
+	"os"
 	"time"
 
 	"go.opentelemetry.io/otel/trace"
@@ -17,6 +18,11 @@ import (
 )
 
 func createDefaultConfig() component.Config {
+	metricsPort := "8888"
+	if port := os.Getenv("OTEL_METRICS_PORT"); port != "" {
+		metricsPort = os.Getenv("OTEL_METRICS_PORT")
+	}
+
 	return &Config{
 		Logs: LogsConfig{
 			Level:       zapcore.InfoLevel,
@@ -36,7 +42,7 @@ func createDefaultConfig() component.Config {
 		},
 		Metrics: MetricsConfig{
 			Level:   configtelemetry.LevelNormal,
-			Address: ":8888",
+			Address: ":" + metricsPort,
 		},
 	}
 }

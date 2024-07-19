@@ -74,7 +74,7 @@ dependabot-check: install-dbotconf
 
 .PHONY: dependabot-generate
 dependabot-generate: install-dbotconf
-	@$(DBOTCONF) generate > $(DEPENDABOT_CONFIG); 
+	@$(DBOTCONF) generate > $(DEPENDABOT_CONFIG);
 
 .PHONY: build
 build: install-tools golint
@@ -91,14 +91,17 @@ build: install-tools golint
 .PHONY: amd64-build
 amd64-build: install-tools golint
 	GOOS=linux GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o ./build/linux/amd64/aoc ./cmd/awscollector
+	GOOS=linux GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o ./build/linux/amd64/healthcheck ./cmd/healthcheck
 
 .PHONY: arm64-build
 arm64-build: install-tools golint
 	GOOS=linux GOARCH=arm64 $(GOBUILD) $(LDFLAGS) -o ./build/linux/arm64/aoc ./cmd/awscollector
+	GOOS=linux GOARCH=arm64 $(GOBUILD) $(LDFLAGS) -o ./build/linux/amd64/healthcheck ./cmd/healthcheck
 
 .PHONY: windows-build
 windows-build: install-tools golint
 	GOOS=windows GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o ./build/windows/amd64/aoc ./cmd/awscollector
+	GOOS=windows GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o ./build/windows/amd64/healthcheck ./cmd/healthcheck
 
 # For building container image during development, no lint nor other platforms
 .PHONY: amd64-build-only
